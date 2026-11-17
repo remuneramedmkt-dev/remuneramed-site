@@ -1,0 +1,4 @@
+Contact: mailto:remuneramed.mkt@gmail.com
+Expires: 2027-11-17T23:59:59.000Z
+Preferred-Languages: pt-BR, en
+Canonical: https://remuneramed.com.br/.well-known/security.txt

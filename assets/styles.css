@@ -144,6 +144,15 @@ h1 span { display: inline; color: var(--brand); }
 .phone-chart { display: grid; grid-template-columns: repeat(9, 1fr); align-items: end; gap: .22rem; height: 4.3rem; margin-top: .25rem; border-bottom: 1px solid #e8531a4d; }
 .phone-chart i { height: var(--height); background: #9b4f36; border-radius: .14rem .14rem 0 0; }
 .phone-chart i:nth-last-child(-n + 3) { background: var(--brand); }
+.phone-chart i:nth-child(1) { --height: 26%; }
+.phone-chart i:nth-child(2) { --height: 36%; }
+.phone-chart i:nth-child(3) { --height: 29%; }
+.phone-chart i:nth-child(4) { --height: 48%; }
+.phone-chart i:nth-child(5) { --height: 40%; }
+.phone-chart i:nth-child(6) { --height: 67%; }
+.phone-chart i:nth-child(7) { --height: 59%; }
+.phone-chart i:nth-child(8) { --height: 87%; }
+.phone-chart i:nth-child(9) { --height: 76%; }
 .phone-list { padding: .9rem .7rem .4rem; }
 .phone-list > strong { display: block; font-size: .66rem; margin-bottom: .35rem; }
 .phone-list > div { display: grid; grid-template-columns: auto 1fr auto; gap: .32rem; align-items: center; border-bottom: 1px solid #e9e3d5; min-height: 2.25rem; font-size: .52rem; }
@@ -440,6 +449,7 @@ h2 { font-size: clamp(2.25rem, 4.2vw, 3.7rem); font-weight: 720; letter-spacing:
   max-width: 36rem;
 }
 .page-404 h1 { margin: 0 0 1rem; }
+.page-404-action { margin-top: 1.5rem; }
 
 @media (max-width: 43rem) {
   .plans-grid, .contact-block { grid-template-columns: 1fr; }

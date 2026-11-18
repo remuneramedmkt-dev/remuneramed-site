@@ -21,8 +21,8 @@ Se quiser esconder o endereço no HTML, o próprio FormSubmit manda, depois da a
 Só o atributo `action` e os campos ocultos que começam com `_` são específicos do FormSubmit.
 
 - **Formspree** (exige conta gratuita): crie um formulário, copie o endereço `https://formspree.io/f/SEU_ID`, troque o `action`, apague os campos ocultos `_captcha`, `_template`, `_subject`, `_next` e o `_honey` (use `_gotcha` no lugar dele) e defina o redirecionamento no painel deles.
-- **Google Forms**: crie o formulário na conta remuneramed.mkt@gmail.com, com os mesmos campos e a caixa de consentimento obrigatória, e troque o botão do site por um link para ele (ou use o endereço `formResponse` com os campos `entry.XXXX`).
-- **Provisório sem terceiros (mailto)**: troque `action` por `mailto:remuneramed.mkt@gmail.com` e acrescente `enctype="text/plain"`. Abre o programa de e-mail da pessoa, então funciona pior no celular.
+- **Google Forms**: crie o formulário na conta suporte@remuneramed.com.br, com os mesmos campos e a caixa de consentimento obrigatória, e troque o botão do site por um link para ele (ou use o endereço `formResponse` com os campos `entry.XXXX`).
+- **Provisório sem terceiros (mailto)**: troque `action` por `mailto:suporte@remuneramed.com.br` e acrescente `enctype="text/plain"`. Abre o programa de e-mail da pessoa, então funciona pior no celular.
 
 Ao trocar de serviço, atualize também a seção "Lista de espera do lançamento" de `privacidade.html` (operador do formulário) e a nota abaixo do botão em `index.html`.
 

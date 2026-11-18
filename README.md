@@ -4,14 +4,14 @@ Site estático (HTML e CSS, sem build) publicado no GitHub Pages em https://remu
 
 ## Lista de espera
 
-O formulário está na seção `#lista-de-espera` de `index.html`. Ele envia os dados por POST para o **FormSubmit** (https://formsubmit.co), que encaminha cada inscrição por e-mail para remuneramed.mkt@gmail.com. Não há backend próprio e não há conta a criar.
+O formulário está na seção `#lista-de-espera` de `index.html`. Ele envia os dados por POST para o **FormSubmit** (https://formsubmit.co), que encaminha cada inscrição por e-mail para suporte@remuneramed.com.br. Não há backend próprio e não há conta a criar.
 
 ### Ativação (obrigatória, uma vez)
 
 O FormSubmit só começa a entregar depois que o dono do e-mail confirma o endereço:
 
 1. Abra https://remuneramed.com.br (ou o endereço do GitHub Pages) e envie o formulário uma vez com dados de teste, marcando o consentimento.
-2. Na caixa de remuneramed.mkt@gmail.com, abra o e-mail do FormSubmit (confira também o spam) e clique em **Activate Form**.
+2. Na caixa de suporte@remuneramed.com.br, abra o e-mail do FormSubmit (confira também o spam) e clique em **Activate Form**.
 3. Envie outro teste e confirme que o e-mail de inscrição chega e que a página `obrigado.html` abre.
 
 Se quiser esconder o endereço no HTML, o próprio FormSubmit manda, depois da ativação, um código aleatório para colocar no lugar do e-mail no atributo `action`.

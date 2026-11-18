@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; upgrade-insecure-requests; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; form-action https://formsubmit.co">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; upgrade-insecure-requests; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://pvfnkokgpkcqzdpzvkcg.supabase.co; form-action 'self'">
   <meta name="theme-color" content="#141413">
   <meta name="robots" content="index,follow">
   <meta name="description" content="A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, recebíveis e rendas de vários vínculos, inclusive pessoa física e PJ.">
@@ -28,6 +28,7 @@
   <meta name="twitter:description" content="A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, recebíveis e rendas de vários vínculos, inclusive pessoa física e PJ.">
   <meta name="twitter:image" content="https://remuneramed.com.br/og-image.png">
   <script src="assets/demo.js" defer></script>
+  <script src="assets/lista-espera.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -167,39 +168,54 @@
           <p>Deixe seu e-mail e a gente avisa sobre o lançamento e sobre a oferta de lançamento do Plus, sujeita às condições da App Store.</p>
           <p class="waitlist-small">Entrar na lista não reserva vaga na oferta. Sem spam: usamos seus dados só para esse aviso. Prefere falar por e-mail? Escreva para <a class="email-link" href="mailto:suporte@remuneramed.com.br">suporte@remuneramed.com.br</a>.</p>
         </div>
-        <form class="waitlist-form" action="https://formsubmit.co/remuneramed.mkt@gmail.com" method="POST" aria-labelledby="lista-titulo">
+        <form class="waitlist-form" id="lista-espera-form" method="post" novalidate aria-labelledby="lista-titulo">
           <div class="field">
             <label for="wl-nome">Nome <span class="req">(obrigatório)</span></label>
-            <input id="wl-nome" name="nome" type="text" required autocomplete="name" maxlength="120">
+            <input id="wl-nome" name="nome" type="text" required autocomplete="name" minlength="2" maxlength="120">
           </div>
           <div class="field">
             <label for="wl-email">E-mail <span class="req">(obrigatório)</span></label>
             <input id="wl-email" name="email" type="email" required autocomplete="email" maxlength="160" inputmode="email">
           </div>
           <div class="field">
+            <label for="wl-telefone">Celular com DDD <span class="req">(obrigatório)</span></label>
+            <input id="wl-telefone" name="telefone" type="tel" required autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(62) 99999-9999" aria-describedby="wl-telefone-ajuda">
+            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular e o e-mail só para falar com você sobre o RemuneraMed.</p>
+          </div>
+          <div class="field">
             <label for="wl-area">Especialidade ou área <span class="opt">(opcional)</span></label>
             <input id="wl-area" name="especialidade_ou_area" type="text" autocomplete="off" maxlength="120">
           </div>
           <div class="field">
-            <label for="wl-cidade">Cidade e UF <span class="opt">(opcional)</span></label>
-            <input id="wl-cidade" name="cidade_uf" type="text" autocomplete="address-level2" maxlength="120">
+            <label for="wl-uf">Estado <span class="opt">(opcional)</span></label>
+            <select id="wl-uf" name="uf" autocomplete="address-level1">
+              <option value="">Selecione o estado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="wl-cidade">Cidade <span class="opt">(opcional)</span></label>
+            <select id="wl-cidade" name="cidade" autocomplete="address-level2" disabled>
+              <option value="">Escolha o estado primeiro</option>
+            </select>
           </div>
           <div class="field-check">
             <input id="wl-consent" name="consentimento" type="checkbox" value="Sim" required>
-            <label for="wl-consent">Aceito receber um aviso por e-mail do RemuneraMed sobre o lançamento do app e sobre a oferta de lançamento do Plus. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. Li a <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</label>
+            <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail e meu celular para me avisar sobre o lançamento do app e sobre a oferta de lançamento do Plus. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. Li a <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</label>
           </div>
           <div class="hp" aria-hidden="true">
             <label for="wl-hp">Não preencha este campo</label>
-            <input id="wl-hp" name="_honey" type="text" tabindex="-1" autocomplete="off">
+            <input id="wl-hp" name="site" type="text" tabindex="-1" autocomplete="off">
           </div>
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_subject" value="Lista de espera RemuneraMed: nova inscrição">
-          <input type="hidden" name="_next" value="https://remuneramed.com.br/obrigado.html">
-          <input type="hidden" name="origem" value="site remuneramed.com.br, lista de espera">
-          <input type="hidden" name="texto_do_consentimento" value="Aceito receber um aviso por e-mail do RemuneraMed sobre o lançamento do app e sobre a oferta de lançamento do Plus.">
-          <button class="button button-primary" type="submit">Entrar na lista de espera</button>
-          <p class="form-note">Ao enviar, os dados seguem para o e-mail da empresa por meio do serviço FormSubmit. Detalhes na <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</p>
+          <!-- UTM: assets/lista-espera.js lê location.search, sem cookies. Sem parâmetros na URL, os campos ficam vazios. -->
+          <input type="hidden" name="utm_source" value="">
+          <input type="hidden" name="utm_medium" value="">
+          <input type="hidden" name="utm_campaign" value="">
+          <input type="hidden" name="utm_content" value="">
+          <input type="hidden" name="utm_term" value="">
+          <button class="button button-primary" id="wl-enviar" type="submit" disabled>Entrar na lista de espera</button>
+          <p class="form-status" id="wl-status" role="status" aria-live="polite" tabindex="-1"></p>
+          <noscript><p class="form-note">Este formulário precisa de JavaScript. Sem ele, escreva para <a href="mailto:suporte@remuneramed.com.br">suporte@remuneramed.com.br</a>.</p></noscript>
+          <p class="form-note">Ao enviar, os dados ficam guardados no banco de dados do RemuneraMed (Supabase, em São Paulo). Detalhes na <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</p>
         </form>
       </div>
     </section>

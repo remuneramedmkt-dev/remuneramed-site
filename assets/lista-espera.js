@@ -1,0 +1,179 @@
+// Lista de espera do RemuneraMed: grava a inscrição na tabela public.lista_espera do Supabase
+// (projeto remuneramed, São Paulo) pela API REST. A chave abaixo é a chave PÚBLICA (publishable):
+// pode ficar no site. Quem protege os dados é a RLS do banco: o navegador só consegue inserir.
+// Sem cookies, sem localStorage e sem sessionStorage.
+const SUPABASE_URL = "https://pvfnkokgpkcqzdpzvkcg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_FhJZCIRBvEnLujGGCIbw9A_G6oTrPVM";
+const ENDPOINT = SUPABASE_URL + "/rest/v1/lista_espera";
+const LISTA_IBGE = "assets/ibge-municipios.json"; // IBGE, API de localidades (arquivo estático do site)
+const PAGINA_OBRIGADO = "obrigado.html";
+const TEMPO_LIMITE_MS = 15000;
+
+const form = document.getElementById("lista-espera-form");
+if (form) {
+  const campo = (nome) => form.elements[nome];
+  const status = document.getElementById("wl-status");
+  const botao = document.getElementById("wl-enviar");
+  const selUf = document.getElementById("wl-uf");
+  const selCidade = document.getElementById("wl-cidade");
+  let municipios = null;
+
+  function mostrar(tipo, texto) {
+    status.dataset.tipo = tipo;
+    status.textContent = texto;
+  }
+  function marcarErro(el, texto) {
+    el.setAttribute("aria-invalid", "true");
+    mostrar("erro", texto);
+    el.focus();
+  }
+  function limparErros() {
+    for (const el of form.querySelectorAll("[aria-invalid]")) el.removeAttribute("aria-invalid");
+    mostrar("", "");
+  }
+
+  // ---------- UTM (sem cookies): lê só location.search ----------
+  const sanitizar = (v) => String(v || "").trim().toLowerCase().replace(/[^a-z0-9._-]/g, "").slice(0, 80);
+  const parametros = new URLSearchParams(window.location.search);
+  for (const nome of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    const el = campo(nome);
+    if (el) el.value = sanitizar(parametros.get(nome));
+  }
+
+  // ---------- Estado e cidade (lista do IBGE embutida no site) ----------
+  function preencherUfs(dados) {
+    for (const uf of dados.ufs) {
+      const o = document.createElement("option");
+      o.value = uf.sigla;
+      o.textContent = uf.nome + " (" + uf.sigla + ")";
+      selUf.append(o);
+    }
+  }
+  function preencherCidades() {
+    const uf = selUf.value;
+    selCidade.replaceChildren();
+    const primeira = document.createElement("option");
+    primeira.value = "";
+    if (!uf || !municipios || !municipios[uf]) {
+      primeira.textContent = "Escolha o estado primeiro";
+      selCidade.append(primeira);
+      selCidade.disabled = true;
+      return;
+    }
+    primeira.textContent = "Selecione a cidade";
+    selCidade.append(primeira);
+    for (const [codigo, nome] of municipios[uf]) {
+      const o = document.createElement("option");
+      o.value = String(codigo);
+      o.textContent = nome;
+      selCidade.append(o);
+    }
+    selCidade.disabled = false;
+  }
+  selUf.addEventListener("change", preencherCidades);
+
+  fetch(LISTA_IBGE)
+    .then((r) => { if (!r.ok) throw new Error("ibge"); return r.json(); })
+    .then((dados) => { municipios = dados.municipios; preencherUfs(dados); })
+    .catch(() => {
+      // Sem a lista, estado e cidade são opcionais: o cadastro segue sem eles.
+      selUf.disabled = true;
+      selCidade.disabled = true;
+      selUf.options[0].textContent = "Lista indisponível agora (campo opcional)";
+    });
+
+  // ---------- Telefone: máscara (DD) 9XXXX-XXXX e normalização +55DDNXXXXXXXX ----------
+  const telefone = campo("telefone");
+  function mascarar(digitos) {
+    const d = digitos.slice(0, 11);
+    if (d.length <= 2) return d.length ? "(" + d : "";
+    if (d.length <= 7) return "(" + d.slice(0, 2) + ") " + d.slice(2);
+    return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+  }
+  function soDigitosNacionais(valor) {
+    let d = String(valor).replace(/\D/g, "");
+    // Colar "+55 62 99999-9999" ou "5562999999999": tira o 55 do país; tira 0 inicial do DDD.
+    if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+    if (d.length > 11 && d.startsWith("0")) d = d.slice(1);
+    return d.slice(0, 11);
+  }
+  telefone.addEventListener("input", () => { telefone.value = mascarar(soDigitosNacionais(telefone.value)); });
+  const celularValido = (d) => /^[1-9][1-9]9[0-9]{8}$/.test(d);
+
+  // ---------- Envio ----------
+  const emailValido = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+
+  function montar() {
+    const valor = (n) => campo(n).value.trim();
+    const rotulo = form.querySelector('label[for="wl-consent"]');
+    const cidadeSel = selCidade.options[selCidade.selectedIndex];
+    const temLocal = selUf.value && selCidade.value;
+    return {
+      nome: valor("nome"),
+      email: valor("email").toLowerCase(),
+      telefone: "+55" + soDigitosNacionais(telefone.value),
+      especialidade_ou_area: valor("especialidade_ou_area") || null,
+      uf: temLocal ? selUf.value : null,
+      cidade: temLocal ? cidadeSel.textContent : null,
+      codigo_ibge_municipio: temLocal ? Number(selCidade.value) : null,
+      consentimento_lgpd: campo("consentimento").checked === true,
+      // O texto gravado é exatamente o que a pessoa leu ao lado da caixa.
+      texto_consentimento: rotulo.textContent.replace(/\s+/g, " ").trim().slice(0, 800),
+      origem: "site remuneramed.com.br, lista de espera",
+      pagina: window.location.pathname.slice(0, 200),
+      utm_source: valor("utm_source") || null,
+      utm_medium: valor("utm_medium") || null,
+      utm_campaign: valor("utm_campaign") || null,
+      utm_content: valor("utm_content") || null,
+      utm_term: valor("utm_term") || null,
+    };
+  }
+
+  form.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+    limparErros();
+
+    // Honeypot: robôs preenchem o campo escondido. Fingimos sucesso e não enviamos nada.
+    if (campo("site").value) {
+      window.location.assign(PAGINA_OBRIGADO);
+      return;
+    }
+
+    const dados = montar();
+    if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
+    if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
+    if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
+    if (selUf.value && !selCidade.value) return marcarErro(selCidade, "Escolha a cidade ou deixe o estado em branco.");
+    if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a caixa de aceite para entrar na lista.");
+
+    botao.disabled = true;
+    mostrar("ok", "Enviando…");
+    const controle = new AbortController();
+    const relogio = setTimeout(() => controle.abort(), TEMPO_LIMITE_MS);
+    try {
+      const resposta = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify(dados),
+        signal: controle.signal,
+      });
+      // 201 = gravado. 409 = e-mail já estava na lista: mesma resposta, para não revelar quem está cadastrado.
+      if (resposta.status === 201 || resposta.status === 409) {
+        window.location.assign(PAGINA_OBRIGADO);
+        return;
+      }
+      throw new Error("status " + resposta.status);
+    } catch (erro) {
+      mostrar("erro", "Não foi possível enviar agora. Tente de novo em instantes ou escreva para suporte@remuneramed.com.br.");
+      botao.disabled = false;
+    } finally {
+      clearTimeout(relogio);
+    }
+  });
+
+  botao.disabled = false; // o botão só liga quando o JavaScript carrega
+}

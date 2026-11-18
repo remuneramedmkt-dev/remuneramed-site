@@ -31,4 +31,4 @@ Ao trocar de serviço, atualize também a seção "Lista de espera do lançament
 - Campos: nome e e-mail obrigatórios; especialidade ou área e cidade/UF opcionais.
 - Caixa de consentimento obrigatória e desmarcada. O texto aceito segue junto de cada inscrição (campo `texto_do_consentimento`).
 - Retenção: até o lançamento mais 6 meses, ou até a pessoa pedir a exclusão (ver `privacidade.html`).
-- Entrar na lista não reserva vaga na oferta dos 100 primeiros.
+- Entrar na lista não reserva vaga na oferta de lançamento.

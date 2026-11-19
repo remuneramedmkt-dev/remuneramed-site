@@ -113,7 +113,7 @@ if (form) {
       nome: valor("nome"),
       email: valor("email").toLowerCase(),
       telefone: "+55" + soDigitosNacionais(telefone.value),
-      especialidade_ou_area: valor("especialidade_ou_area") || null,
+      especialidade: campo("especialidade").value,
       uf: selUf.value,
       cidade: selCidade.value ? cidadeSel.textContent : "",
       codigo_ibge_municipio: selCidade.value ? Number(selCidade.value) : null,
@@ -144,6 +144,7 @@ if (form) {
     if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
     if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
     if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
+    if (!dados.especialidade) return marcarErro(campo("especialidade"), "Escolha a especialidade ou a opção para quem ainda não tem.");
     if (listaIndisponivel) return mostrar("erro", "A lista de estados e cidades não carregou. Recarregue a página ou escreva para suporte@remuneramed.com.br.");
     if (!selUf.value) return marcarErro(selUf, "Escolha o estado.");
     if (!selCidade.value) return marcarErro(selCidade, "Escolha a cidade.");

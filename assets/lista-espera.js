@@ -73,6 +73,15 @@ if (form) {
   }
   selUf.addEventListener("change", preencherCidades);
 
+  // "Outra": mostra um campo de texto opcional (até 80 caracteres) para dizer qual.
+  const selArea = campo("especialidade");
+  const campoOutra = document.getElementById("wl-outra-campo");
+  selArea.addEventListener("change", () => {
+    const outra = selArea.value === "outra";
+    campoOutra.hidden = !outra;
+    if (!outra) campo("especialidade_outra").value = "";
+  });
+
   fetch(LISTA_IBGE)
     .then((r) => { if (!r.ok) throw new Error("ibge"); return r.json(); })
     .then((dados) => { municipios = dados.municipios; preencherUfs(dados); })
@@ -114,6 +123,7 @@ if (form) {
       email: valor("email").toLowerCase(),
       telefone: "+55" + soDigitosNacionais(telefone.value),
       especialidade: campo("especialidade").value,
+      especialidade_outra: campo("especialidade").value === "outra" ? (valor("especialidade_outra") || null) : null,
       uf: selUf.value,
       cidade: selCidade.value ? cidadeSel.textContent : "",
       codigo_ibge_municipio: selCidade.value ? Number(selCidade.value) : null,

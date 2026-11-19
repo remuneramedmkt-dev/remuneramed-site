@@ -519,3 +519,5 @@ h2 { font-size: clamp(2.25rem, 4.2vw, 3.7rem); font-weight: 720; letter-spacing:
 .waitlist-form .button { justify-self: start; border: 0; cursor: pointer; }
 .form-note { color: var(--muted); font-size: .82rem; line-height: 1.6; }
 @media (max-width: 54rem) { .waitlist { grid-template-columns: 1fr; } }
+
+[hidden] { display: none !important; }

@@ -116,7 +116,13 @@ if (form) {
 
   function montar() {
     const valor = (n) => campo(n).value.trim();
-    const rotulo = form.querySelector('label[for="wl-consent"]');
+    // O texto gravado é exatamente o que a pessoa leu ao lado da caixa, sem o "(obrigatório)" e o "(facultativo)".
+    const textoDe = (id) => {
+      const copia = form.querySelector('label[for="' + id + '"]').cloneNode(true);
+      for (const marca of copia.querySelectorAll(".req, .opt")) marca.remove();
+      return copia.textContent.replace(/\s+/g, " ").trim().slice(0, 800);
+    };
+    const whatsapp = campo("consentimento_whatsapp").checked === true;
     const cidadeSel = selCidade.options[selCidade.selectedIndex];
     return {
       nome: valor("nome"),
@@ -128,8 +134,9 @@ if (form) {
       cidade: selCidade.value ? cidadeSel.textContent : "",
       codigo_ibge_municipio: selCidade.value ? Number(selCidade.value) : null,
       consentimento_lgpd: campo("consentimento").checked === true,
-      // O texto gravado é exatamente o que a pessoa leu ao lado da caixa.
-      texto_consentimento: rotulo.textContent.replace(/\s+/g, " ").trim().slice(0, 800),
+      texto_consentimento: textoDe("wl-consent"),
+      consentimento_whatsapp: whatsapp,
+      texto_consentimento_whatsapp: whatsapp ? textoDe("wl-consent-whatsapp") : null,
       origem: "site remuneramed.com.br, lista de espera",
       pagina: window.location.pathname.slice(0, 200),
       utm_source: valor("utm_source") || null,
@@ -154,11 +161,11 @@ if (form) {
     if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
     if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
     if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
-    if (!dados.especialidade) return marcarErro(campo("especialidade"), "Escolha a especialidade ou a opção para quem ainda não tem.");
+    if (!dados.especialidade) return marcarErro(campo("especialidade"), "Escolha uma opção de especialidade.");
     if (listaIndisponivel) return mostrar("erro", "A lista de estados e cidades não carregou. Recarregue a página ou escreva para suporte@remuneramed.com.br.");
     if (!selUf.value) return marcarErro(selUf, "Escolha o estado.");
     if (!selCidade.value) return marcarErro(selCidade, "Escolha a cidade.");
-    if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a caixa de aceite para entrar na lista.");
+    if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a primeira caixa de aceite (e-mail) para entrar na lista.");
 
     botao.disabled = true;
     mostrar("ok", "Enviando…");

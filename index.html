@@ -166,7 +166,7 @@
           <p class="plan-kicker">Lista de espera</p>
           <h2 id="lista-titulo">Receba um aviso quando o app for lançado.</h2>
           <p>Deixe seu e-mail e a gente avisa sobre o lançamento e sobre a oferta de lançamento do Plus, sujeita às condições da App Store.</p>
-          <p class="waitlist-small">Entrar na lista não reserva vaga na oferta. Sem spam: usamos seus dados só para esse aviso. Prefere falar por e-mail? Escreva para <a class="email-link" href="mailto:suporte@remuneramed.com.br">suporte@remuneramed.com.br</a>.</p>
+          <p class="waitlist-small">Entrar na lista não garante condição comercial futura. Sem spam: usamos seus dados só como descrito na política de privacidade. Prefere falar por e-mail? Escreva para <a class="email-link" href="mailto:suporte@remuneramed.com.br">suporte@remuneramed.com.br</a>.</p>
         </div>
         <form class="waitlist-form" id="lista-espera-form" method="post" novalidate aria-labelledby="lista-titulo">
           <div class="field">
@@ -180,12 +180,12 @@
           <div class="field">
             <label for="wl-telefone">Celular com DDD <span class="req">(obrigatório)</span></label>
             <input id="wl-telefone" name="telefone" type="tel" required autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(62) 99999-9999" aria-describedby="wl-telefone-ajuda">
-            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular e o e-mail só para falar com você sobre o RemuneraMed, por e-mail e por WhatsApp. Se puder, informe um número que tenha WhatsApp.</p>
+            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular só para falar com você pelo WhatsApp, e apenas se você marcar a opção de WhatsApp mais abaixo. Se puder, informe um número que tenha WhatsApp.</p>
           </div>
           <div class="field">
             <label for="wl-area">Especialidade <span class="req">(obrigatório)</span></label>
             <select id="wl-area" name="especialidade" required autocomplete="off">
-              <option value="">Selecione a especialidade</option>
+              <option value="">Escolha uma opção</option>
               <option value="generalista">Sem especialidade</option>
               <option value="acupuntura">Acupuntura</option>
               <option value="alergia-e-imunologia">Alergia e imunologia</option>
@@ -245,10 +245,12 @@
               <option value="residente-estudante">Residente ou estudante</option>
               <option value="outra">Outra</option>
             </select>
+            <p class="field-help" id="wl-area-ajuda">Esta escolha descreve só o seu perfil profissional, para o RemuneraMed entender quem se interessa pelo app financeiro. Não é registro de especialidade, não pede RQE e não atesta título. Se você ainda não tem especialidade, escolha "Sem especialidade" ou "Residente ou estudante". O RemuneraMed não é um serviço médico.</p>
           </div>
           <div class="field" id="wl-outra-campo" hidden>
             <label for="wl-outra">Qual especialidade? <span class="opt">(opcional)</span></label>
-            <input id="wl-outra" name="especialidade_outra" type="text" maxlength="80" autocomplete="off">
+            <input id="wl-outra" name="especialidade_outra" type="text" maxlength="80" autocomplete="off" aria-describedby="wl-outra-ajuda">
+            <p class="field-help" id="wl-outra-ajuda">Se quiser, escreva só o nome da área. Não informe dados de pacientes, dados de saúde, CRM nem informações de terceiros.</p>
           </div>
           <div class="field">
             <label for="wl-uf">Estado <span class="req">(obrigatório)</span></label>
@@ -264,8 +266,13 @@
           </div>
           <div class="field-check">
             <input id="wl-consent" name="consentimento" type="checkbox" value="Sim" required>
-            <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail e meu celular, inclusive por WhatsApp, para falar comigo sobre o lançamento do app e sobre a oferta de lançamento do Plus. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. Li a <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</label>
+            <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail para me avisar sobre o lançamento do app e sobre a oferta de lançamento do Plus, quando ela estiver confirmada na App Store. Aceito também que use a especialidade, o estado e a cidade que informei só para entender o perfil de quem entra na lista e para adaptar o aviso de lançamento, se houver recado específico. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. <span class="req">(obrigatório)</span></label>
           </div>
+          <div class="field-check">
+            <input id="wl-consent-whatsapp" name="consentimento_whatsapp" type="checkbox" value="Sim">
+            <label for="wl-consent-whatsapp">Aceito também receber no WhatsApp, no celular informado, mensagens do RemuneraMed sobre o lançamento do app e sobre a oferta de lançamento do Plus, quando ela estiver confirmada na App Store. Posso pedir para parar quando quiser, pelo próprio WhatsApp ou pelo e-mail suporte@remuneramed.com.br. <span class="opt">(facultativo)</span></label>
+          </div>
+          <p class="field-help">A <a href="privacidade.html#lista-de-espera">política de privacidade</a> descreve o uso desses dados.</p>
           <div class="hp" aria-hidden="true">
             <label for="wl-hp">Não preencha este campo</label>
             <input id="wl-hp" name="site" type="text" tabindex="-1" autocomplete="off">

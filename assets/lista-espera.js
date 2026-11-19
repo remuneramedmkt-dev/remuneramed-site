@@ -17,6 +17,7 @@ if (form) {
   const selUf = document.getElementById("wl-uf");
   const selCidade = document.getElementById("wl-cidade");
   let municipios = null;
+  let listaIndisponivel = false;
 
   function mostrar(tipo, texto) {
     status.dataset.tipo = tipo;
@@ -76,10 +77,11 @@ if (form) {
     .then((r) => { if (!r.ok) throw new Error("ibge"); return r.json(); })
     .then((dados) => { municipios = dados.municipios; preencherUfs(dados); })
     .catch(() => {
-      // Sem a lista, estado e cidade são opcionais: o cadastro segue sem eles.
+      // Estado e cidade são obrigatórios: sem a lista, o envio é bloqueado com aviso.
       selUf.disabled = true;
       selCidade.disabled = true;
-      selUf.options[0].textContent = "Lista indisponível agora (campo opcional)";
+      selUf.options[0].textContent = "Lista indisponível agora";
+      listaIndisponivel = true;
     });
 
   // ---------- Telefone: máscara (DD) 9XXXX-XXXX e normalização +55DDNXXXXXXXX ----------
@@ -107,15 +109,14 @@ if (form) {
     const valor = (n) => campo(n).value.trim();
     const rotulo = form.querySelector('label[for="wl-consent"]');
     const cidadeSel = selCidade.options[selCidade.selectedIndex];
-    const temLocal = selUf.value && selCidade.value;
     return {
       nome: valor("nome"),
       email: valor("email").toLowerCase(),
       telefone: "+55" + soDigitosNacionais(telefone.value),
       especialidade_ou_area: valor("especialidade_ou_area") || null,
-      uf: temLocal ? selUf.value : null,
-      cidade: temLocal ? cidadeSel.textContent : null,
-      codigo_ibge_municipio: temLocal ? Number(selCidade.value) : null,
+      uf: selUf.value,
+      cidade: selCidade.value ? cidadeSel.textContent : "",
+      codigo_ibge_municipio: selCidade.value ? Number(selCidade.value) : null,
       consentimento_lgpd: campo("consentimento").checked === true,
       // O texto gravado é exatamente o que a pessoa leu ao lado da caixa.
       texto_consentimento: rotulo.textContent.replace(/\s+/g, " ").trim().slice(0, 800),
@@ -143,7 +144,9 @@ if (form) {
     if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
     if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
     if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
-    if (selUf.value && !selCidade.value) return marcarErro(selCidade, "Escolha a cidade ou deixe o estado em branco.");
+    if (listaIndisponivel) return mostrar("erro", "A lista de estados e cidades não carregou. Recarregue a página ou escreva para suporte@remuneramed.com.br.");
+    if (!selUf.value) return marcarErro(selUf, "Escolha o estado.");
+    if (!selCidade.value) return marcarErro(selCidade, "Escolha a cidade.");
     if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a caixa de aceite para entrar na lista.");
 
     botao.disabled = true;

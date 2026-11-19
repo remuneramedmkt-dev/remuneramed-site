@@ -180,27 +180,27 @@
           <div class="field">
             <label for="wl-telefone">Celular com DDD <span class="req">(obrigatório)</span></label>
             <input id="wl-telefone" name="telefone" type="tel" required autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(62) 99999-9999" aria-describedby="wl-telefone-ajuda">
-            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular e o e-mail só para falar com você sobre o RemuneraMed.</p>
+            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular e o e-mail só para falar com você sobre o RemuneraMed, por e-mail e por WhatsApp. Se puder, informe um número que tenha WhatsApp.</p>
           </div>
           <div class="field">
             <label for="wl-area">Especialidade ou área <span class="opt">(opcional)</span></label>
             <input id="wl-area" name="especialidade_ou_area" type="text" autocomplete="off" maxlength="120">
           </div>
           <div class="field">
-            <label for="wl-uf">Estado <span class="opt">(opcional)</span></label>
-            <select id="wl-uf" name="uf" autocomplete="address-level1">
+            <label for="wl-uf">Estado <span class="req">(obrigatório)</span></label>
+            <select id="wl-uf" name="uf" required autocomplete="address-level1">
               <option value="">Selecione o estado</option>
             </select>
           </div>
           <div class="field">
-            <label for="wl-cidade">Cidade <span class="opt">(opcional)</span></label>
-            <select id="wl-cidade" name="cidade" autocomplete="address-level2" disabled>
+            <label for="wl-cidade">Cidade <span class="req">(obrigatório)</span></label>
+            <select id="wl-cidade" name="cidade" required autocomplete="address-level2" disabled>
               <option value="">Escolha o estado primeiro</option>
             </select>
           </div>
           <div class="field-check">
             <input id="wl-consent" name="consentimento" type="checkbox" value="Sim" required>
-            <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail e meu celular para me avisar sobre o lançamento do app e sobre a oferta de lançamento do Plus. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. Li a <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</label>
+            <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail e meu celular, inclusive por WhatsApp, para falar comigo sobre o lançamento do app e sobre a oferta de lançamento do Plus. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. Li a <a href="privacidade.html#lista-de-espera">política de privacidade</a>.</label>
           </div>
           <div class="hp" aria-hidden="true">
             <label for="wl-hp">Não preencha este campo</label>

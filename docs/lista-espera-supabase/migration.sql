@@ -1,6 +1,6 @@
 -- =====================================================================
--- RASCUNHO: NÃO APLICADO. Só roda depois da aprovação do Gabriel.
--- Projeto Supabase: remuneramed (ref pvfnkokgpkcqzdpzvkcg, sa-east-1, São Paulo)
+-- APLICADA em 19/11/2026 no projeto de produção, com aprovação do Gabriel (migration lista_espera_inicial).
+-- Projeto Supabase: remuneramed (ref pvfnkokgpkcqzdpzvkcg, sa-east-1, São Paulo), confirmado pelo Gabriel como o de produção
 -- Tabela da lista de espera do site remuneramed.com.br
 -- Substitui o FormSubmit. Quem escreve é o navegador (papel anon) via
 -- POST /rest/v1/lista_espera; ninguém além do dono do projeto lê.
@@ -15,9 +15,9 @@ create table public.lista_espera (
   email                    text        not null,
   telefone                 text        not null,   -- só dígitos normalizados: +55DDNXXXXXXXX
   especialidade_ou_area    text,
-  uf                       char(2),                -- lista do IBGE
-  cidade                   text,                   -- nome oficial do município (IBGE)
-  codigo_ibge_municipio    integer,                -- 7 dígitos (IBGE)
+  uf                       char(2)     not null,   -- lista do IBGE
+  cidade                   text        not null,   -- nome oficial do município (IBGE)
+  codigo_ibge_municipio    integer     not null,   -- 7 dígitos (IBGE)
 
   -- consentimento (LGPD, art. 7º, I): a data e a hora são o created_at
   consentimento_lgpd       boolean     not null,
@@ -43,25 +43,20 @@ create table public.lista_espera (
   -- celular brasileiro: +55, DDD de 2 dígitos (11 a 99, sem zero), 9 e mais 8 dígitos
   constraint lista_espera_tel_fmt    check (telefone ~ '^\+55[1-9][1-9]9[0-9]{8}$'),
   constraint lista_espera_area_tam   check (especialidade_ou_area is null or char_length(especialidade_ou_area) <= 120),
-  constraint lista_espera_uf_val     check (uf is null or uf in (
+  constraint lista_espera_uf_val     check (uf in (
     'AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR',
     'RJ','RN','RO','RR','RS','SC','SE','SP','TO')),
-  constraint lista_espera_cidade_tam check (cidade is null or char_length(cidade) between 2 and 120),
-  -- UF, cidade e código do município vêm juntos ou não vêm
-  constraint lista_espera_local_junto check (
-    (uf is null and cidade is null and codigo_ibge_municipio is null)
-    or (uf is not null and cidade is not null and codigo_ibge_municipio is not null)),
+  constraint lista_espera_cidade_tam check (char_length(cidade) between 2 and 120),
   -- os 2 primeiros dígitos do código do município são o código IBGE da UF
   constraint lista_espera_ibge_uf check (
-    codigo_ibge_municipio is null or (
-      codigo_ibge_municipio between 1100000 and 5399999
-      and (codigo_ibge_municipio / 100000) = case uf
+    codigo_ibge_municipio between 1100000 and 5399999
+    and (codigo_ibge_municipio / 100000) = case uf
         when 'RO' then 11 when 'AC' then 12 when 'AM' then 13 when 'RR' then 14 when 'PA' then 15
         when 'AP' then 16 when 'TO' then 17 when 'MA' then 21 when 'PI' then 22 when 'CE' then 23
         when 'RN' then 24 when 'PB' then 25 when 'PE' then 26 when 'AL' then 27 when 'SE' then 28
         when 'BA' then 29 when 'MG' then 31 when 'ES' then 32 when 'RJ' then 33 when 'SP' then 35
         when 'PR' then 41 when 'SC' then 42 when 'RS' then 43 when 'MS' then 50 when 'MT' then 51
-        when 'GO' then 52 when 'DF' then 53 end)),
+        when 'GO' then 52 when 'DF' then 53 end),
   constraint lista_espera_consent    check (consentimento_lgpd is true),
   constraint lista_espera_texto_tam  check (char_length(texto_consentimento) between 20 and 800),
   constraint lista_espera_origem_tam check (origem is null or char_length(origem) <= 120),
@@ -87,7 +82,7 @@ begin
   new.nome  := btrim(new.nome);
   new.email := lower(btrim(new.email));
   new.especialidade_ou_area := nullif(btrim(new.especialidade_ou_area), '');
-  new.cidade       := nullif(btrim(new.cidade), '');
+  new.cidade       := btrim(new.cidade);
   new.origem       := nullif(btrim(new.origem), '');
   new.pagina       := nullif(btrim(new.pagina), '');
   new.utm_source   := nullif(btrim(new.utm_source), '');
@@ -134,19 +129,62 @@ create policy "anon pode inserir inscricao com consentimento"
 -- Sem política de SELECT/UPDATE/DELETE: com RLS ligado, isso significa "negado".
 
 -- ---------------------------------------------------------------------
--- LIMITE DE ABUSO (OPCIONAL, fica comentado)
--- Um teto global de inscrições por minuto protege a tabela de inundação, mas um
--- atacante também pode travar inscrições legítimas ao bater o teto. Só ative se
--- houver ataque. Alternativas melhores no LEIA-ME (Cloudflare, Edge Function).
+-- E-mail repetido: ignora em silêncio, sem revelar que já existe
+-- Sem isso, a unicidade devolveria 409 e qualquer pessoa descobriria quem está na lista.
+-- Com o gatilho, o navegador recebe 201 nos dois casos. O anon continua sem SELECT: a
+-- consulta roda com a permissão do dono (SECURITY DEFINER, search_path fixo). Gatilho não
+-- fica exposto como RPC e o EXECUTE é revogado. Ordem alfabética: roda depois do normalizar.
+-- A constraint lista_espera_email_unico continua como rede de segurança (corrida de dois envios).
 -- ---------------------------------------------------------------------
--- create function public.lista_espera_limite()
--- returns trigger language plpgsql security definer set search_path = '' as $$
--- begin
---   if (select count(*) from public.lista_espera where created_at > now() - interval '1 minute') >= 30 then
---     raise exception 'limite de inscricoes por minuto' using errcode = 'P0001';
---   end if;
---   return new;
--- end $$;
--- revoke all on function public.lista_espera_limite() from public, anon, authenticated;
--- create trigger lista_espera_limite before insert on public.lista_espera
---   for each row execute function public.lista_espera_limite();
+create function public.lista_espera_z_ignorar_duplicado()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if exists (
+    select 1 from public.lista_espera l where l.email = lower(btrim(new.email))
+  ) then
+    return null;  -- descarta a linha sem erro
+  end if;
+  return new;
+end;
+$$;
+revoke all on function public.lista_espera_z_ignorar_duplicado() from public, anon, authenticated;
+
+create trigger lista_espera_z_ignorar_duplicado
+  before insert on public.lista_espera
+  for each row execute function public.lista_espera_z_ignorar_duplicado();
+
+-- ---------------------------------------------------------------------
+-- LIMITE BÁSICO DE ENVIOS (global, ligado)
+-- No máximo 30 inscrições novas por minuto e 600 por hora em todo o site. Protege a tabela
+-- de inundação. Risco aceito: um atacante pode ocupar o teto e bloquear inscrições
+-- legítimas por alguns minutos. Se isso acontecer, adicionar Turnstile + Edge Function
+-- (ver LEIA-ME). Ajuste os números aqui se o lançamento trouxer picos.
+-- ---------------------------------------------------------------------
+create index lista_espera_created_at_idx on public.lista_espera (created_at desc);
+
+create function public.lista_espera_z_limite()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if (select count(*) from public.lista_espera where created_at > now() - interval '1 minute') >= 30
+     or (select count(*) from public.lista_espera where created_at > now() - interval '1 hour') >= 600 then
+    raise exception 'limite de inscricoes atingido' using errcode = 'P0001';
+  end if;
+  return new;
+end;
+$$;
+revoke all on function public.lista_espera_z_limite() from public, anon, authenticated;
+
+create trigger lista_espera_z_limite
+  before insert on public.lista_espera
+  for each row execute function public.lista_espera_z_limite();
+
+-- Ordem dos gatilhos BEFORE INSERT (alfabética): normalizar, z_ignorar_duplicado, z_limite.
+-- ROLLBACK (só se precisar desfazer tudo): drop table public.lista_espera; drop function public.lista_espera_normalizar(), public.lista_espera_z_ignorar_duplicado(), public.lista_espera_z_limite();

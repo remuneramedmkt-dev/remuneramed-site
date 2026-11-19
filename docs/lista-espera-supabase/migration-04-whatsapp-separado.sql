@@ -4,12 +4,15 @@
 -- consentimento_lgpd continua obrigatório (e-mail + segmentação por especialidade, estado e cidade).
 -- consentimento_whatsapp: default false; se true, o texto aceito vai em texto_consentimento_whatsapp
 -- (20 a 800 caracteres); se false, o texto fica nulo.
+-- Correcao aplicada logo apos (migration lista_espera_whatsapp_check_nulo): o CHECK original deixava passar
+-- true com texto nulo, porque char_length(null) da NULL e o CHECK aceita NULL. Este arquivo ja traz a versao correta.
 -- =====================================================================
 
 alter table public.lista_espera add column consentimento_whatsapp boolean not null default false;
 alter table public.lista_espera add column texto_consentimento_whatsapp text;
 alter table public.lista_espera add constraint lista_espera_whatsapp_val check (
-  (consentimento_whatsapp is true and char_length(texto_consentimento_whatsapp) between 20 and 800)
+  (consentimento_whatsapp is true and texto_consentimento_whatsapp is not null
+    and char_length(texto_consentimento_whatsapp) between 20 and 800)
   or (consentimento_whatsapp is false and texto_consentimento_whatsapp is null));
 grant insert (consentimento_whatsapp, texto_consentimento_whatsapp) on public.lista_espera to anon;
 

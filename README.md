@@ -9,7 +9,8 @@ O formulário está na seção `#lista-de-espera` de `index.html` e é tratado p
 - Campos: nome, e-mail, celular com DDD, especialidade, estado e cidade (todos obrigatórios). A especialidade vem da lista do CFM (Resolução 2.472/2026, 55 especialidades) mais "Sem especialidade", "Residente ou estudante" e "Outra" (texto opcional de até 80 caracteres). O valor gravado é o código de `/produto/melhorias-app/dados/especialidades-cfm-2472-ids.json`, igual ao do app, e o banco valida por CHECK (`docs/lista-espera-supabase/migration-02-especialidade.sql` e `migration-03-especialidade-codigos.sql`). Estado e cidade vêm de listas de seleção alimentadas por `assets/ibge-municipios.json`, gerado da API de localidades do IBGE (para atualizar, baixe `https://servicodados.ibge.gov.br/api/v1/localidades/municipios` de novo).
 - O celular é gravado normalizado (`+55DDNXXXXXXXX`).
 - UTM (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`) lidos da URL, sem cookies.
-- Caixa de consentimento obrigatória e desmarcada; o texto exato que a pessoa leu é gravado em `texto_consentimento`.
+- Duas caixas de aceite, ambas desmarcadas. A 1ª (e-mail e segmentação por especialidade, estado e cidade) é obrigatória e grava o texto em `texto_consentimento`. A 2ª (WhatsApp) é facultativa, grava `consentimento_whatsapp` (padrão false) e o texto em `texto_consentimento_whatsapp`. O texto gravado é o que a pessoa leu, sem as marcas "(obrigatório)" e "(facultativo)".
+- Pedidos de acesso, correção e exclusão: prazo de 15 dias (LGPD art. 19), citado na política e no suporte. O procedimento interno fica na pasta de marketing (Conformidade), fora deste repositório.
 - Campo escondido `site` (honeypot) descarta robôs.
 - Retenção: até o lançamento mais 6 meses, ou até a pessoa pedir a exclusão (ver `privacidade.html`).
 - Entrar na lista não reserva vaga na oferta de lançamento.

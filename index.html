@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; upgrade-insecure-requests; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self' https://pvfnkokgpkcqzdpzvkcg.supabase.co; form-action 'self'">
   <meta name="theme-color" content="#141413">
   <meta name="robots" content="index,follow">
-  <meta name="description" content="A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, recebíveis e rendas de vários vínculos, inclusive pessoa física e PJ.">
-  <title>RemuneraMed</title>
+  <meta name="description" content="Plantões, vínculos, convênios e PJ num só app. Veja o que cada fonte deve te pagar, quando deve cair e o que já entrou na conta.">
+  <title>RemuneraMed: app financeiro para médicos | plantões, vínculos e PJ</title>
   <link rel="canonical" href="https://remuneramed.com.br/">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -16,17 +16,139 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="RemuneraMed">
-  <meta property="og:title" content="RemuneraMed">
-  <meta property="og:description" content="A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, recebíveis e rendas de vários vínculos, inclusive pessoa física e PJ.">
+  <meta property="og:title" content="RemuneraMed: app financeiro para médicos | plantões, vínculos e PJ">
+  <meta property="og:description" content="Plantões, vínculos, convênios e PJ num só app. Veja o que cada fonte deve te pagar, quando deve cair e o que já entrou na conta.">
   <meta property="og:url" content="https://remuneramed.com.br/">
   <meta property="og:image" content="https://remuneramed.com.br/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Ícone do RemuneraMed com o nome da marca e a frase A solução pra organizar sua vida financeira em um só app.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="RemuneraMed">
-  <meta name="twitter:description" content="A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, recebíveis e rendas de vários vínculos, inclusive pessoa física e PJ.">
+  <meta name="twitter:title" content="RemuneraMed: app financeiro para médicos | plantões, vínculos e PJ">
+  <meta name="twitter:description" content="Plantões, vínculos, convênios e PJ num só app. Veja o que cada fonte deve te pagar, quando deve cair e o que já entrou na conta.">
   <meta name="twitter:image" content="https://remuneramed.com.br/og-image.png">
+  <!-- Dados estruturados (schema.org). JSON-LD não é executado pelo navegador, então a CSP não precisa mudar. Sem preço nem oferta até o App Store Connect confirmar. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://remuneramed.com.br/#organizacao",
+        "name": "RemuneraMed",
+        "legalName": "ABRAHAO SERVICOS MEDICOS E TECNOLOGIA LTDA",
+        "taxID": "56.109.849/0001-52",
+        "url": "https://remuneramed.com.br/",
+        "logo": "https://remuneramed.com.br/assets/icone-192.png",
+        "email": "suporte@remuneramed.com.br",
+        "sameAs": [
+          "https://www.instagram.com/remuneramed/",
+          "https://www.youtube.com/@remuneramed",
+          "https://www.tiktok.com/@remuneramed"
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://remuneramed.com.br/#app",
+        "name": "RemuneraMed",
+        "operatingSystem": "iOS",
+        "applicationCategory": "FinanceApplication",
+        "inLanguage": "pt-BR",
+        "description": "Plantões, vínculos, convênios e PJ num só app. Veja o que cada fonte deve te pagar, quando deve cair e o que já entrou na conta.",
+        "url": "https://remuneramed.com.br/",
+        "publisher": {
+          "@id": "https://remuneramed.com.br/#organizacao"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://remuneramed.com.br/#duvidas",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "O que é o RemuneraMed?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "É um app para iPhone que organiza a vida financeira de quem tem mais de uma fonte de renda na medicina: plantões, vínculos, convênios, consultório e PJ. Ele mostra o que cada fonte deve pagar, quando deve cair e o que já entrou na conta."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O RemuneraMed é consultoria financeira ou contábil? Substitui meu contador?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Não. O app organiza as informações que você lança e faz cálculos a partir delas. Não é consultoria financeira, contábil ou fiscal e não substitui o seu contador. Decisões fiscais e contábeis devem ser vistas com profissionais."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Onde ficam os meus dados financeiros?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No Básico, os dados financeiros ficam no iPhone. No Plus e no Premium, a sincronização entre aparelhos é opcional: a cópia viaja por HTTPS e fica criptografada em repouso no servidor do RemuneraMed, em São Paulo, com a chave mantida pelo RemuneraMed. Os detalhes estão na política de privacidade."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Preciso conectar minha conta bancária?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Não. O app não pede senha de banco nem acesso à sua conta. Você importa o extrato por arquivo (OFX ou CSV) ou por print, e o print é lido no próprio aparelho."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Funciona sem internet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No Básico, sim: os dados ficam no iPhone. A conta, a sincronização entre aparelhos e o registro pelo WhatsApp precisam de internet."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Em quais aparelhos o app vai funcionar? Tem Android?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O lançamento começa pelo iPhone, na App Store. Outras plataformas ainda não têm data."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como vai funcionar o registro pelo WhatsApp?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "É uma função que chega em breve no Plus e no Premium. Você vincula seu número no app e manda despesas ou plantões por mensagem. Nada é gravado sem você confirmar no app, e o vínculo pode ser desfeito a qualquer momento."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Qual é a diferença entre Básico, Plus e Premium?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Básico cobre plantões, vínculos, o que há a receber, a conferência com o banco, a importação de extrato e de print, metas e gastos por categoria. O Plus inclui o Básico e acrescenta lembretes de plantão, sincronização opcional e, em breve, o registro pelo WhatsApp. O Premium inclui o Plus e acrescenta convênios, glosas e repasses, projeção de 12 meses, o simulador PF × PJ e as decisões de carro e imóvel. Veja a tabela dos planos."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como funciona o período de teste e a oferta?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Há 7 dias grátis só no plano Básico, para quem quiser testar antes de assinar. O Plus não tem período de teste grátis. Está prevista uma oferta de lançamento para o Plus, que só vale depois de confirmada na App Store e segue as condições da loja. O Premium é compra direta, sem teste. Os valores de cada plano serão exibidos na App Store. Entrar na lista de espera não garante condição comercial futura."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como cancelo a assinatura ou peço suporte?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O cancelamento é feito nos Ajustes do iPhone, em seu nome e depois Assinaturas. Para falar com a gente, escreva para suporte@remuneramed.com.br ou veja a página de suporte."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <script src="assets/demo.js" defer></script>
   <script src="assets/lista-espera.js" defer></script>
 </head>
@@ -39,26 +161,30 @@
         RemuneraMed
       </a>
       <nav class="nav-desktop" aria-label="Navegação principal">
-        <a href="index.html#como-funciona">Como funciona</a>
+        <a href="index.html#como-funciona">Funções</a>
         <a href="index.html#planos">Planos</a>
-        <a href="index.html#lista-de-espera">Lista de espera</a>
+        <a href="index.html#seus-dados">Seus dados</a>
+        <a href="index.html#duvidas">Dúvidas</a>
         <a href="index.html#contato">Contato</a>
       </nav>
       <details class="nav-menu">
         <summary>Menu</summary>
         <nav aria-label="Navegação em tela pequena">
           <a href="index.html">Início</a>
-          <a href="index.html#como-funciona">Como funciona</a>
+          <a href="index.html#como-funciona">Funções</a>
+          <a href="index.html#whatsapp">WhatsApp</a>
           <a href="index.html#planos">Planos</a>
+          <a href="index.html#seus-dados">Seus dados</a>
           <a href="index.html#lista-de-espera">Lista de espera</a>
           <a href="index.html#demo">Demonstração</a>
+          <a href="index.html#duvidas">Dúvidas</a>
           <a href="index.html#contato">Contato</a>
           <a href="privacidade.html">Privacidade</a>
           <a href="termos.html">Termos de uso</a>
           <a href="suporte.html">Suporte</a>
         </nav>
       </details>
-      <a class="button button-outline header-action" href="#demo">Ver demonstração</a>
+      <a class="button button-brand header-action" href="#lista-de-espera">Entrar na lista</a>
     </div>
   </header>
 
@@ -67,8 +193,11 @@
       <div class="hero-copy">
         <p class="eyebrow badge-store"><span class="status-dot" aria-hidden="true"></span> Em breve na App Store</p>
         <h1 id="titulo">Veja quanto vai receber <span>e quando.</span></h1>
-        <p class="hero-description">A solução pra organizar sua vida financeira em um só app. Acompanhe plantões, o que há a receber e as rendas de vários vínculos, da pessoa física e da PJ, em um só lugar.</p>
-        <a class="button button-primary" href="#demo">Explorar a demonstração</a>
+        <p class="hero-description">Plantões, vínculos, convênios e PJ num só app. O RemuneraMed mostra o que cada fonte deve te pagar, quando deve cair e o que já entrou na conta.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#lista-de-espera">Entrar na lista de espera</a>
+          <a class="button button-outline button-secondary" href="#demo">Ver a demonstração</a>
+        </div>
       </div>
 
       <figure class="hero-visual">
@@ -105,59 +234,165 @@
 
     <section class="section container" id="como-funciona" aria-labelledby="como-titulo">
       <div class="section-heading">
-        <h2 id="como-titulo">Cada tipo de renda tem<br>seu próprio ritmo.</h2>
-        <p>Planeje o mês com os valores previstos e as datas em que o dinheiro deve entrar. Compare com o que foi pago à medida que os recebimentos chegam.</p>
+        <h2 id="como-titulo">Feito para a rotina de quem tem mais de uma fonte de renda.</h2>
+        <p>Cada tipo de renda tem seu próprio ritmo. Planeje o mês com os valores previstos e as datas em que o dinheiro deve entrar, e compare com o que foi pago.</p>
       </div>
-      <div class="flow-grid">
-        <article class="flow-card">
-          <span class="flow-mark mark-calendar" aria-hidden="true"></span>
-          <h3>Plantões e vínculos</h3>
-          <p>Cadastre vínculos e lance plantões com a premissa de quando o pagamento deve cair. Veja salários, contratos PJ e outros pagadores no mesmo painel.</p>
+      <div class="features-grid">
+        <article class="feature-card">
+          <h3>Agenda de plantões</h3>
+          <p>Plantões avulsos e recorrentes, com modelos de turno e locais salvos.</p>
         </article>
-        <article class="flow-card">
-          <span class="flow-mark mark-lines" aria-hidden="true"></span>
-          <h3>A receber</h3>
-          <p>Acompanhe quanto há a receber, de quem e até quando. Compare o que entrou no banco com o que deveria ter sido pago.</p>
+        <article class="feature-card">
+          <h3>Escala no seu calendário</h3>
+          <p>Publique os plantões dos próximos 90 dias no Calendário do iPhone ou na sua conta Google.</p>
         </article>
-        <article class="flow-card">
-          <span class="flow-mark mark-chart" aria-hidden="true"></span>
-          <h3>Pessoa física e PJ</h3>
-          <p>Veja o faturamento, os custos e o lucro da empresa de um lado, a renda da pessoa física do outro, e a visão dos dois juntos.</p>
+        <article class="feature-card">
+          <h3>Lembrete antes do plantão <span class="tag">Plus</span></h3>
+          <p>Aviso no iPhone 1h ou 2h antes de cada plantão.</p>
         </article>
-        <article class="flow-card">
-          <span class="flow-mark mark-target" aria-hidden="true"></span>
-          <h3>Caixa e metas</h3>
-          <p>Coloque a previsão de renda lado a lado com despesas e metas. Veja quanto sobra e planeje seus próximos passos.</p>
+        <article class="feature-card">
+          <h3>O que cada fonte deve te pagar</h3>
+          <p>Folha, contrato PJ, convênio e consultório, com a data prevista de cada pagamento.</p>
         </article>
+        <article class="feature-card">
+          <h3>Conferência com o banco</h3>
+          <p>Importe o extrato (OFX ou CSV) ou um print e veja o que entrou e o que ainda falta.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Gastos e metas</h3>
+          <p>Gastos por categoria, metas e o caixa do mês, lado a lado com a renda prevista.</p>
+        </article>
+        <article class="feature-card">
+          <h3>PF e PJ, separadas e juntas</h3>
+          <p>Faturamento, custos e lucro da empresa, renda da pessoa física e a visão consolidada.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Convênios e glosas <span class="tag">Premium</span></h3>
+          <p>Busca TUSS, tabela de preços negociados, produção, glosas e repasses.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Projeção e decisões <span class="tag">Premium</span></h3>
+          <p>Saldo projetado para 12 meses, simulador PF × PJ e simulações de carro e imóvel com os números que você lança.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Registro por WhatsApp <span class="tag tag-soon">Em breve</span></h3>
+          <p>Mande despesas e plantões por mensagem. No Plus e no Premium.</p>
+        </article>
+      </div>
+      <p class="features-note">O RemuneraMed organiza as informações que você lança. Não é consultoria financeira, contábil ou fiscal.</p>
+    </section>
+
+    <section class="section container" id="whatsapp" aria-labelledby="whatsapp-titulo">
+      <div class="whatsapp-block">
+        <div class="whatsapp-copy">
+          <p class="badge-soon">Em breve no Plus e no Premium</p>
+          <h2 id="whatsapp-titulo">Na correria? Registre pelo WhatsApp.</h2>
+          <p>Saiu do plantão, pagou o estacionamento, pegou um turno extra. Em vez de abrir o app, mande uma mensagem para o número do RemuneraMed. Ele entende e prepara o lançamento para você conferir no iPhone.</p>
+          <p class="whatsapp-note">Nada é gravado sem você confirmar no app. Fotos e áudios não são lidos: viram uma pendência para você preencher. O vínculo do número é opcional e pode ser desfeito a qualquer momento. Detalhes na <a href="privacidade.html">política de privacidade</a>.</p>
+          <a class="button button-primary" href="#lista-de-espera">Entrar na lista de espera</a>
+        </div>
+        <div class="chat" aria-label="Exemplos fictícios de mensagens">
+          <p class="sample-label">Exemplos fictícios</p>
+          <div class="chat-item">
+            <p class="bubble bubble-out">Gastei 42,50 na farmácia ontem</p>
+            <p class="bubble bubble-in">Rascunho de despesa criado com valor, data e categoria sugerida. Confira no app.</p>
+          </div>
+          <div class="chat-item">
+            <p class="bubble bubble-out">Peguei plantão 13/12 19-07 na UPA</p>
+            <p class="bubble bubble-in">Plantão extra pronto para confirmar. Ele entra na agenda e na previsão do que você vai receber.</p>
+          </div>
+          <div class="chat-item">
+            <p class="bubble bubble-out">Passei plantão 22/11 diurno</p>
+            <p class="bubble bubble-in">Pronto para confirmar: a ocorrência sai da sua agenda.</p>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section container" id="planos" aria-labelledby="planos-titulo">
       <div class="section-heading">
-        <h2 id="planos-titulo">Planos e oferta de lançamento</h2>
+        <h2 id="planos-titulo">O que cada plano inclui</h2>
         <p>A assinatura é cobrada pela App Store e renova automaticamente até ser cancelada. Confira o valor e as condições na tela da Apple antes de confirmar.</p>
       </div>
       <div class="plans-grid">
         <article class="plan-card">
-          <p class="plan-kicker">Para testar</p>
+          <p class="plan-kicker">7 dias grátis para testar</p>
           <h3>Básico</h3>
           <p class="plan-price"><span>Valor na App Store</span></p>
-          <p>7 dias grátis para quem quiser testar antes de assinar. O teste grátis vale só neste plano.</p>
+          <ul class="plan-list">
+            <li>Vínculos PF e PJ e agenda de plantões</li>
+            <li>O que você tem a receber, de quem e quando</li>
+            <li>Conferência do que caiu no banco</li>
+            <li>Importação de extrato (OFX ou CSV) e de print</li>
+            <li>Metas e gastos por categoria</li>
+            <li>Seus dados financeiros ficam no iPhone</li>
+          </ul>
         </article>
         <article class="plan-card plan-card-featured">
           <p class="plan-kicker">Oferta de lançamento</p>
           <h3>Plus</h3>
           <p class="plan-price"><span>Valor na App Store</span></p>
-          <p>O Plus não tem período de teste grátis. O valor será exibido na App Store no momento da compra.</p>
+          <ul class="plan-list">
+            <li>Tudo do Básico</li>
+            <li>Lembrete do plantão 1h ou 2h antes</li>
+            <li>Sincronização opcional entre aparelhos</li>
+            <li>Registro por WhatsApp <span class="tag tag-soon">Em breve</span></li>
+            <li class="plan-list-muted">Sem teste grátis</li>
+          </ul>
         </article>
         <article class="plan-card">
-          <p class="plan-kicker">Compra direta</p>
+          <p class="plan-kicker">Planejamento completo</p>
           <h3>Premium</h3>
           <p class="plan-price"><span>Valor na App Store</span></p>
-          <p>Contratação direta, sem período de teste. O valor será exibido na App Store no momento da compra.</p>
+          <ul class="plan-list">
+            <li>Tudo do Plus</li>
+            <li>Convênios com busca TUSS, produção, glosas e repasses</li>
+            <li>Projeção de saldo para 12 meses</li>
+            <li>Simulador PF × PJ</li>
+            <li>Decisões: carro, imóvel, amortizar ou investir</li>
+            <li>Patrimônio e momento financeiro</li>
+            <li class="plan-list-muted">Sem teste grátis</li>
+          </ul>
         </article>
       </div>
-      <p class="plans-note">A oferta de lançamento do Plus está sujeita às condições da App Store. A forma de resgate será informada na loja. <a href="#lista-de-espera">Entre na lista de espera</a> para ser avisado.</p>
+      <p class="plans-note">Os valores de cada plano serão exibidos na App Store no momento da compra. A oferta de lançamento do Plus está sujeita às condições da App Store, e a forma de resgate será informada na loja. <a href="#lista-de-espera">Entre na lista de espera</a> para ser avisado.</p>
+    </section>
+
+    <section class="section container" id="quem-faz" aria-labelledby="quem-titulo">
+      <div class="founder">
+        <p class="plan-kicker">Feito por um médico</p>
+        <h2 id="quem-titulo">Criado por quem também vive de plantão.</h2>
+        <blockquote class="founder-quote">
+          <p>"Sou médico e, como muitos colegas, recebo de várias fontes, em datas diferentes, entre PF e PJ. Criei o RemuneraMed para saber quanto vou receber e quando, sem planilha."</p>
+        </blockquote>
+        <p class="founder-name">Gabriel Rezende Abrahão Pereira · Médico · CRM 36.445-GO</p>
+        <p class="founder-note">O RemuneraMed é um app de organização financeira. Não presta serviço médico.</p>
+      </div>
+    </section>
+
+    <section class="section container" id="seus-dados" aria-labelledby="dados-titulo">
+      <div class="section-heading stack">
+        <h2 id="dados-titulo">Seus dados, do seu jeito.</h2>
+      </div>
+      <div class="data-grid">
+        <article class="data-card">
+          <h3>No Básico, tudo fica no seu iPhone</h3>
+          <p>Os registros financeiros ficam no aparelho e não é preciso criar conta. Se o backup do iPhone estiver ativado (no iCloud ou no computador), eles entram nele.</p>
+        </article>
+        <article class="data-card">
+          <h3>Sem senha de banco</h3>
+          <p>Você importa o extrato por arquivo ou por print, e o print é lido no próprio aparelho. O app não acessa sua conta bancária.</p>
+        </article>
+        <article class="data-card">
+          <h3>Sincronização só se você quiser</h3>
+          <p>No Plus e no Premium, a cópia viaja por HTTPS e fica criptografada em repouso no servidor do RemuneraMed, em São Paulo. A chave é mantida pelo RemuneraMed. Você pode pausar o recurso ou apagar a cópia pelo app.</p>
+        </article>
+        <article class="data-card">
+          <h3>Nada de dado de paciente</h3>
+          <p>Use códigos, quantidades e valores agregados. Deixe fora dos lançamentos nomes de pacientes, prontuários e dados clínicos.</p>
+        </article>
+      </div>
+      <p class="plans-note"><a href="privacidade.html">Leia a política de privacidade completa</a>.</p>
     </section>
 
     <section class="section container" id="lista-de-espera" aria-labelledby="lista-titulo">
@@ -176,11 +411,6 @@
           <div class="field">
             <label for="wl-email">E-mail <span class="req">(obrigatório)</span></label>
             <input id="wl-email" name="email" type="email" required autocomplete="email" maxlength="160" inputmode="email">
-          </div>
-          <div class="field">
-            <label for="wl-telefone">Celular com DDD <span class="req">(obrigatório)</span></label>
-            <input id="wl-telefone" name="telefone" type="tel" required autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(62) 99999-9999" aria-describedby="wl-telefone-ajuda">
-            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular só para falar com você pelo WhatsApp, e apenas se você marcar a opção de WhatsApp mais abaixo. Se puder, informe um número que tenha WhatsApp.</p>
           </div>
           <div class="field">
             <label for="wl-area">Especialidade <span class="req">(obrigatório)</span></label>
@@ -269,8 +499,13 @@
             <label for="wl-consent">Aceito que o RemuneraMed use meu e-mail para me avisar sobre o lançamento do app e sobre a oferta de lançamento do Plus, quando ela estiver confirmada na App Store. Aceito também que use a especialidade, o estado e a cidade que informei só para entender o perfil de quem entra na lista e para adaptar o aviso de lançamento, se houver recado específico. Posso retirar o consentimento a qualquer momento escrevendo para suporte@remuneramed.com.br. <span class="req">(obrigatório)</span></label>
           </div>
           <div class="field-check">
-            <input id="wl-consent-whatsapp" name="consentimento_whatsapp" type="checkbox" value="Sim">
-            <label for="wl-consent-whatsapp">Aceito também receber no WhatsApp, no celular informado, mensagens do RemuneraMed sobre o lançamento do app e sobre a oferta de lançamento do Plus, quando ela estiver confirmada na App Store. Posso pedir para parar quando quiser, pelo próprio WhatsApp ou pelo e-mail suporte@remuneramed.com.br. <span class="opt">(facultativo)</span></label>
+            <input id="wl-consent-whatsapp" name="consentimento_whatsapp" type="checkbox" value="Sim" aria-controls="wl-telefone-campo">
+            <label for="wl-consent-whatsapp">Aceito também receber no WhatsApp, no celular que eu informar abaixo, mensagens do RemuneraMed sobre o lançamento do app e sobre a oferta de lançamento do Plus, quando ela estiver confirmada na App Store. Posso pedir para parar quando quiser, pelo próprio WhatsApp ou pelo e-mail suporte@remuneramed.com.br. <span class="opt">(facultativo)</span></label>
+          </div>
+          <div class="field" id="wl-telefone-campo" hidden>
+            <label for="wl-telefone">Celular com WhatsApp e DDD <span class="req">(obrigatório se marcar o WhatsApp)</span></label>
+            <input id="wl-telefone" name="telefone" type="tel" autocomplete="tel-national" inputmode="numeric" maxlength="15" placeholder="(62) 99999-9999" aria-describedby="wl-telefone-ajuda">
+            <p class="field-help" id="wl-telefone-ajuda">Usamos o celular só para falar com você pelo WhatsApp. Sem a caixa do WhatsApp marcada, o celular não é pedido nem guardado.</p>
           </div>
           <p class="field-help">A <a href="privacidade.html#lista-de-espera">política de privacidade</a> descreve o uso desses dados.</p>
           <div class="hp" aria-hidden="true">
@@ -325,16 +560,40 @@
       </div>
       <div class="faq-list">
         <details>
-          <summary>Onde ficam os meus dados financeiros?</summary>
-          <p>No Básico, os dados financeiros ficam no iPhone. Plus e Premium oferecem sincronização opcional. Os detalhes estão na <a href="privacidade.html">política de privacidade</a>.</p>
+          <summary>O que é o RemuneraMed?</summary>
+          <p>É um app para iPhone que organiza a vida financeira de quem tem mais de uma fonte de renda na medicina: plantões, vínculos, convênios, consultório e PJ. Ele mostra o que cada fonte deve pagar, quando deve cair e o que já entrou na conta.</p>
         </details>
         <details>
-          <summary>Em quais aparelhos o app vai funcionar?</summary>
-          <p>O lançamento começa pelo iPhone, na App Store.</p>
+          <summary>O RemuneraMed é consultoria financeira ou contábil? Substitui meu contador?</summary>
+          <p>Não. O app organiza as informações que você lança e faz cálculos a partir delas. Não é consultoria financeira, contábil ou fiscal e não substitui o seu contador. Decisões fiscais e contábeis devem ser vistas com profissionais.</p>
+        </details>
+        <details>
+          <summary>Onde ficam os meus dados financeiros?</summary>
+          <p>No Básico, os dados financeiros ficam no iPhone. No Plus e no Premium, a sincronização entre aparelhos é opcional: a cópia viaja por HTTPS e fica criptografada em repouso no servidor do RemuneraMed, em São Paulo, com a chave mantida pelo RemuneraMed. Os detalhes estão na <a href="privacidade.html">política de privacidade</a>.</p>
+        </details>
+        <details>
+          <summary>Preciso conectar minha conta bancária?</summary>
+          <p>Não. O app não pede senha de banco nem acesso à sua conta. Você importa o extrato por arquivo (OFX ou CSV) ou por print, e o print é lido no próprio aparelho.</p>
+        </details>
+        <details>
+          <summary>Funciona sem internet?</summary>
+          <p>No Básico, sim: os dados ficam no iPhone. A conta, a sincronização entre aparelhos e o registro pelo WhatsApp precisam de internet.</p>
+        </details>
+        <details>
+          <summary>Em quais aparelhos o app vai funcionar? Tem Android?</summary>
+          <p>O lançamento começa pelo iPhone, na App Store. Outras plataformas ainda não têm data.</p>
+        </details>
+        <details>
+          <summary>Como vai funcionar o registro pelo WhatsApp?</summary>
+          <p>É uma função que chega em breve no Plus e no Premium. Você vincula seu número no app e manda despesas ou plantões por mensagem. Nada é gravado sem você confirmar no app, e o vínculo pode ser desfeito a qualquer momento.</p>
+        </details>
+        <details>
+          <summary>Qual é a diferença entre Básico, Plus e Premium?</summary>
+          <p>O Básico cobre plantões, vínculos, o que há a receber, a conferência com o banco, a importação de extrato e de print, metas e gastos por categoria. O Plus inclui o Básico e acrescenta lembretes de plantão, sincronização opcional e, em breve, o registro pelo WhatsApp. O Premium inclui o Plus e acrescenta convênios, glosas e repasses, projeção de 12 meses, o simulador PF × PJ e as decisões de carro e imóvel. Veja a <a href="#planos">tabela dos planos</a>.</p>
         </details>
         <details>
           <summary>Como funciona o período de teste e a oferta?</summary>
-          <p>Há 7 dias grátis só no plano Básico, para quem quiser testar antes de assinar. O Plus não tem período de teste grátis. O Premium é compra direta, sem teste. Os valores de cada plano serão exibidos na App Store.</p>
+          <p>Há 7 dias grátis só no plano Básico, para quem quiser testar antes de assinar. O Plus não tem período de teste grátis. Está prevista uma oferta de lançamento para o Plus, que só vale depois de confirmada na App Store e segue as condições da loja. O Premium é compra direta, sem teste. Os valores de cada plano serão exibidos na App Store. Entrar na lista de espera não garante condição comercial futura.</p>
         </details>
         <details>
           <summary>Como cancelo a assinatura ou peço suporte?</summary>

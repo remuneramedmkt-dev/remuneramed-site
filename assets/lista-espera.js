@@ -111,6 +111,19 @@ if (form) {
   telefone.addEventListener("input", () => { telefone.value = mascarar(soDigitosNacionais(telefone.value)); });
   const celularValido = (d) => /^[1-9][1-9]9[0-9]{8}$/.test(d);
 
+  // O celular só aparece (e só é obrigatório) quando a pessoa marca a caixa do WhatsApp.
+  // Sem a caixa marcada, o campo é limpo e o celular não é enviado.
+  const caixaWhatsapp = campo("consentimento_whatsapp");
+  const campoTelefone = document.getElementById("wl-telefone-campo");
+  function atualizarTelefone() {
+    const marcado = caixaWhatsapp.checked === true;
+    campoTelefone.hidden = !marcado;
+    telefone.required = marcado;
+    if (!marcado) { telefone.value = ""; telefone.removeAttribute("aria-invalid"); }
+  }
+  caixaWhatsapp.addEventListener("change", atualizarTelefone);
+  atualizarTelefone();
+
   // ---------- Envio ----------
   const emailValido = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 
@@ -127,7 +140,7 @@ if (form) {
     return {
       nome: valor("nome"),
       email: valor("email").toLowerCase(),
-      telefone: "+55" + soDigitosNacionais(telefone.value),
+      telefone: whatsapp ? "+55" + soDigitosNacionais(telefone.value) : null,
       especialidade: campo("especialidade").value,
       especialidade_outra: campo("especialidade").value === "outra" ? (valor("especialidade_outra") || null) : null,
       uf: selUf.value,
@@ -160,12 +173,12 @@ if (form) {
     const dados = montar();
     if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
     if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
-    if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
     if (!dados.especialidade) return marcarErro(campo("especialidade"), "Escolha uma opção de especialidade.");
     if (listaIndisponivel) return mostrar("erro", "A lista de estados e cidades não carregou. Recarregue a página ou escreva para suporte@remuneramed.com.br.");
     if (!selUf.value) return marcarErro(selUf, "Escolha o estado.");
     if (!selCidade.value) return marcarErro(selCidade, "Escolha a cidade.");
     if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a primeira caixa de aceite (e-mail) para entrar na lista.");
+    if (dados.consentimento_whatsapp && !celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Para receber pelo WhatsApp, informe um celular com DDD, como (62) 99999-9999. Se não quiser, desmarque a caixa do WhatsApp.");
 
     botao.disabled = true;
     mostrar("ok", "Enviando…");

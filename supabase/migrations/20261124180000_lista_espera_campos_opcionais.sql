@@ -6,8 +6,9 @@
 --     (consentimento_lgpd + texto_consentimento), que já eram NOT NULL e continuam.
 --   * telefone, especialidade, uf, cidade e codigo_ibge_municipio deixam de ser NOT NULL.
 --   * O celular passa a ser obrigatório só quando consentimento_whatsapp = true.
---   * O front deixa de enviar o celular sem o aceite do WhatsApp (minimização, LGPD
---     art. 6º, III). Não há CHECK para isso no banco (ver o motivo mais abaixo).
+--   * Sem o aceite do WhatsApp, o celular não é guardado (minimização, LGPD art. 6º, III):
+--     o front não envia e o banco recusa (CHECK lista_espera_sem_whatsapp_sem_tel), pedido
+--     da Conformidade em 24/11/2026 (REVISAO-2026-11-24-conversao-site.md).
 --   * Cidade e código IBGE andam juntos, e cidade exige estado (o CHECK
 --     lista_espera_ibge_uf não pega o caso de uf nulo com código preenchido).
 --
@@ -38,12 +39,15 @@ alter table public.lista_espera
   add constraint lista_espera_tel_se_whatsapp
   check (consentimento_whatsapp is false or telefone is not null);
 
--- Sem WhatsApp, sem celular: o front novo não envia o celular quando a caixa do WhatsApp
--- está desmarcada. De propósito, NÃO há CHECK para isso no banco: as inscrições antigas
--- guardaram o celular pelo formulário anterior, e um CHECK (mesmo NOT VALID) seria
--- reavaliado em qualquer UPDATE dessas linhas (testado em Postgres 17 local), travando
--- correções e pedidos de titulares. Se a Conformidade quiser a regra no banco, primeiro
--- decidir o que fazer com o celular das linhas antigas sem WhatsApp.
+-- Sem aceite do WhatsApp, sem celular. A tabela tinha 0 linhas em 24/11/2026 (select count(*)
+-- só de leitura), então nenhuma linha antiga é afetada. Se entrarem linhas antes de aplicar,
+-- conferir antes: select count(*) from public.lista_espera
+--   where consentimento_whatsapp is false and telefone is not null;
+-- Se der mais que zero, a constraint falha ao ser criada; o que fazer com esses celulares
+-- (tratamento de dados) precisa de decisão do Gabriel.
+alter table public.lista_espera
+  add constraint lista_espera_sem_whatsapp_sem_tel
+  check (consentimento_whatsapp is true or telefone is null);
 
 -- Cidade e código IBGE juntos; cidade exige estado.
 alter table public.lista_espera
@@ -83,6 +87,7 @@ comment on column public.lista_espera.especialidade is 'Código da especialidade
 
 -- ROLLBACK (só funciona se nenhuma linha tiver NULL nesses campos; antes, apague ou complete essas linhas):
 -- alter table public.lista_espera drop constraint lista_espera_cidade_coerente;
+-- alter table public.lista_espera drop constraint lista_espera_sem_whatsapp_sem_tel;
 -- alter table public.lista_espera drop constraint lista_espera_tel_se_whatsapp;
 -- alter table public.lista_espera
 --   alter column telefone set not null, alter column especialidade set not null,

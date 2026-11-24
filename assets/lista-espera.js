@@ -17,7 +17,6 @@ if (form) {
   const selUf = document.getElementById("wl-uf");
   const selCidade = document.getElementById("wl-cidade");
   let municipios = null;
-  let listaIndisponivel = false;
 
   function mostrar(tipo, texto) {
     status.dataset.tipo = tipo;
@@ -86,11 +85,10 @@ if (form) {
     .then((r) => { if (!r.ok) throw new Error("ibge"); return r.json(); })
     .then((dados) => { municipios = dados.municipios; preencherUfs(dados); })
     .catch(() => {
-      // Estado e cidade são obrigatórios: sem a lista, o envio é bloqueado com aviso.
+      // Estado e cidade são opcionais: sem a lista, os dois ficam desligados e o envio segue sem eles.
       selUf.disabled = true;
       selCidade.disabled = true;
       selUf.options[0].textContent = "Lista indisponível agora";
-      listaIndisponivel = true;
     });
 
   // ---------- Telefone: máscara (DD) 9XXXX-XXXX e normalização +55DDNXXXXXXXX ----------
@@ -111,6 +109,19 @@ if (form) {
   telefone.addEventListener("input", () => { telefone.value = mascarar(soDigitosNacionais(telefone.value)); });
   const celularValido = (d) => /^[1-9][1-9]9[0-9]{8}$/.test(d);
 
+  // O celular só aparece (e só é obrigatório) quando a pessoa marca a caixa do WhatsApp.
+  // Sem a caixa marcada, o campo é limpo e o celular não é enviado.
+  const caixaWhatsapp = campo("consentimento_whatsapp");
+  const campoTelefone = document.getElementById("wl-telefone-campo");
+  function atualizarTelefone() {
+    const marcado = caixaWhatsapp.checked === true;
+    campoTelefone.hidden = !marcado;
+    telefone.required = marcado;
+    if (!marcado) { telefone.value = ""; telefone.removeAttribute("aria-invalid"); }
+  }
+  caixaWhatsapp.addEventListener("change", atualizarTelefone);
+  atualizarTelefone();
+
   // ---------- Envio ----------
   const emailValido = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 
@@ -127,11 +138,11 @@ if (form) {
     return {
       nome: valor("nome"),
       email: valor("email").toLowerCase(),
-      telefone: "+55" + soDigitosNacionais(telefone.value),
-      especialidade: campo("especialidade").value,
+      telefone: whatsapp ? "+55" + soDigitosNacionais(telefone.value) : null,
+      especialidade: campo("especialidade").value || null,
       especialidade_outra: campo("especialidade").value === "outra" ? (valor("especialidade_outra") || null) : null,
-      uf: selUf.value,
-      cidade: selCidade.value ? cidadeSel.textContent : "",
+      uf: selUf.value || null,
+      cidade: selCidade.value ? cidadeSel.textContent : null,
       codigo_ibge_municipio: selCidade.value ? Number(selCidade.value) : null,
       consentimento_lgpd: campo("consentimento").checked === true,
       texto_consentimento: textoDe("wl-consent"),
@@ -160,12 +171,9 @@ if (form) {
     const dados = montar();
     if (dados.nome.length < 2) return marcarErro(campo("nome"), "Informe seu nome.");
     if (!emailValido(dados.email) || dados.email.length > 160) return marcarErro(campo("email"), "Informe um e-mail válido, como nome@exemplo.com.");
-    if (!celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Informe um celular com DDD, como (62) 99999-9999.");
-    if (!dados.especialidade) return marcarErro(campo("especialidade"), "Escolha uma opção de especialidade.");
-    if (listaIndisponivel) return mostrar("erro", "A lista de estados e cidades não carregou. Recarregue a página ou escreva para suporte@remuneramed.com.br.");
-    if (!selUf.value) return marcarErro(selUf, "Escolha o estado.");
-    if (!selCidade.value) return marcarErro(selCidade, "Escolha a cidade.");
+    // Especialidade, estado e cidade são opcionais. Se escolher o estado, a cidade também fica opcional.
     if (!dados.consentimento_lgpd) return marcarErro(campo("consentimento"), "Marque a primeira caixa de aceite (e-mail) para entrar na lista.");
+    if (dados.consentimento_whatsapp && !celularValido(soDigitosNacionais(telefone.value))) return marcarErro(telefone, "Para receber pelo WhatsApp, informe um celular com DDD, como (62) 99999-9999. Se não quiser, desmarque a caixa do WhatsApp.");
 
     botao.disabled = true;
     mostrar("ok", "Enviando…");
